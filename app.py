@@ -1,14 +1,11 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin,  LoginManager
-import os
 
 from datetime import datetime
 import pytz
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-app.config['SECREt_KEY'] = os.urandom(24)
 db = SQLAlchemy(app)
 
 
@@ -20,10 +17,7 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, 
                            default=datetime.now(pytz.timezone('Asia/Tokyo')))
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), unique=True)
-    password = db.Column(db.String(12))
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
